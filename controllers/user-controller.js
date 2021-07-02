@@ -47,7 +47,7 @@ const userController = {
 
   getUserById({ params }, res) {
     User.findById({
-      _id: params.id
+      _id: params.userId
     })
       .populate({
         path: 'thoughts',
@@ -84,7 +84,7 @@ const userController = {
          "email": "updatedemail@email.com"
        }
     */
-      { _id: params.id }, body, { new: true, runValidators: true }
+      { _id: params.userId }, body, { new: true, runValidators: true }
     )
       .then(dbUserData => {
         if(!dbUserData) {
@@ -97,7 +97,35 @@ const userController = {
   },
 
   deleteUserById({ params }, res) {
-    User.findOneAndDelete({ _id: params.id })
+    User.findOneAndDelete({ _id: params.userId })
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ msg: `No User found with this ID` });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => res.status(400).json(err));
+  },
+  // adds friend to users friends array
+  // endpoint is /api/users/:userId/friends/:friendId
+  // :userId is _id of the user to add friend to; :friendId is the _id of friend to add
+  addFriend({ params }, res) {
+    User.findOneAndUpdate( { _id: params.userId}, {$addToSet: { friends: params.friendId }}, {new: true} )
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ msg: `No User found with this ID` });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => res.status(400).json(err));
+  },
+  // removes friend from user's friends array
+  // endpoint is /api/users/:userId/friends/:friendId
+  // :userId is _id of the user to remove friend from; :friendId is the _id of friend to remove
+  removeFriend({ params }, res) {
+    User.findOneAndUpdate( {_id: params.userId }, {$pull: { friends: params.friendId }}, {new: true} )
       .then(dbUserData => {
         if (!dbUserData) {
           res.status(404).json({ msg: `No User found with this ID` });
