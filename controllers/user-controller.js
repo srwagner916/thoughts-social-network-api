@@ -33,13 +33,13 @@ const userController = {
   },
 
   // creates user
+  /* expects body
+     {
+       "username", "testUser",
+       "email", "testuser@email.com"
+     } 
+  */
   createUser({ body }, res) {
-    /* expects body
-       {
-         "username", "testUser",
-         "email", "testuser@email.com"
-       } 
-    */
     User.create(body)
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.status(400).json(err));
@@ -76,14 +76,14 @@ const userController = {
       */
   },
   // Gets user by Id and update
+  /* Expects body:
+     {
+       "username": "updatedUsername",
+       "email": "updatedemail@email.com"
+     }
+  */
   updateUserById({ body, params }, res) {
     User.findOneAndUpdate(
-    /* Expects body:
-       {
-         "username": "updatedUsername",
-         "email": "updatedemail@email.com"
-       }
-    */
       { _id: params.userId }, body, { new: true, runValidators: true }
     )
       .then(dbUserData => {
