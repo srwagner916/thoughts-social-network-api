@@ -1,6 +1,15 @@
 const { Thought, User } = require('../models');
 
 const thoughtController = {
+  // gets all thoughts
+  getAllThoughts(req, res) {
+    Thought.find({})
+      .select('-__v')
+      .then(dbThoughtData => res.json(dbThoughtData))
+      .catch(err => res.status(400).json(err));
+  },
+  
+  // adds a new thought and pushes to user's thoughts array
   addThought({ params, body }, res) {
     /*
       expect body to be:
@@ -22,7 +31,8 @@ const thoughtController = {
         res.json(dbUserData);
       })
       .catch(err => res.json(err));
-  }
+  },
+
 }
 
 module.exports = thoughtController;
