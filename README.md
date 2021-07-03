@@ -10,8 +10,9 @@ This project is an API to be used in a social network app. It allows for creatin
 ## Installation
 To install this application, first clone the code onto your machine. You will need to install the dependencies by running the command `npm install`. This app uses the packages mongoose and express. You will also need to have mongoDb installed on your machine. [You can find a link to the download here.](https://www.mongodb.com/try/download/community)
 ## Usage
-For a demonstration on the usage of this app please follow this link to find a walkthrough video of going through the methods.
+For a demonstration on the usage of this app please follow the links below to find a walkthrough going through the methods.
 [Walkthrough Demonstration](https://drive.google.com/file/d/1NVq-fuD4u5P9zOeVuPmNbLEEtCCscP8K/view)
+[Walkthrough of removing a reaction](https://drive.google.com/file/d/1eKINQsNHWLw1bilrG74MRIK2aPmN7fmU/view)
 
 ## Contribution
 I don't expect any contribution.
