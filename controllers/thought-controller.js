@@ -8,7 +8,8 @@ const thoughtController = {
       .then(dbThoughtData => res.json(dbThoughtData))
       .catch(err => res.status(400).json(err));
   },
-
+  
+  // gets a thought by ID
   getThoughtById({ params }, res) {
     Thought.findOne({ _id: params.thoughtId})
       .then(dbThoughtData => {
@@ -44,6 +45,8 @@ const thoughtController = {
       })
       .catch(err => res.json(err));
   },
+
+  // Finds a thought by Id and updates
   updateThoughtById({ body, params }, res) {
     Thought.findOneAndUpdate(
     /* Expects body:
@@ -63,6 +66,25 @@ const thoughtController = {
       .catch(err => res.status(400).json(err));
   },
 
+  // deletes a thought by ID and pulls from User's thoughts array
+  // endpoint: /api/thoughts/:thoughtId/users/:userId
+  removeThought({ params }, res) {
+    Thought.findOneAndDelete({ _id: params.thoughtId })
+      .then(removedThought => {
+        if (!removedThought) {
+          return res.status(404).json({ msg: `No thought found with this ID` });
+        }
+        return User.findOneAndUpdate({ _id: params.userId }, { $pull: { thoughts: params.thoughtId } }, { new: true, runValidators: true });
+      })
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ msg: `No user found with this ID` });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => res.status(400).json(err));
+  }
 }
 
 module.exports = thoughtController;
