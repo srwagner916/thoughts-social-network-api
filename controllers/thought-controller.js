@@ -8,6 +8,18 @@ const thoughtController = {
       .then(dbThoughtData => res.json(dbThoughtData))
       .catch(err => res.status(400).json(err));
   },
+
+  getThoughtById({ params }, res) {
+    Thought.findOne({ _id: params.thoughtId})
+      .then(dbThoughtData => {
+        if (!dbThoughtData) {
+          res.status(404).json({ msg: `No thought found with this Id` });
+          return;
+        }
+        res.json(dbThoughtData)
+      })
+      .catch(err => res.status(400).json(err));
+  },
   
   // adds a new thought and pushes to user's thoughts array
   addThought({ params, body }, res) {
@@ -32,7 +44,7 @@ const thoughtController = {
       })
       .catch(err => res.json(err));
   },
-
+  
 }
 
 module.exports = thoughtController;
