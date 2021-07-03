@@ -8,7 +8,7 @@ const thoughtController = {
       .then(dbThoughtData => res.json(dbThoughtData))
       .catch(err => res.status(400).json(err));
   },
-  
+
   // gets a thought by ID
   getThoughtById({ params }, res) {
     Thought.findOne({ _id: params.thoughtId})
@@ -47,6 +47,7 @@ const thoughtController = {
   },
 
   // Finds a thought by Id and updates
+  // endpoint: /api/thoughts/:thoughtId
   updateThoughtById({ body, params }, res) {
     Thought.findOneAndUpdate(
     /* Expects body:
